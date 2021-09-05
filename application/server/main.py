@@ -23,14 +23,17 @@ async def index():
 
 
 @app.post("/predict/image")
-async def predict_api(file: UploadFile = File(...)):
-    extension = file.filename.split(".")[-1] in ("jpg", "jpeg", "png")
-    print(file.filename)
+async def predict_api(filename):
+    extension = filename.split(".")[-1] in ("jpg", "jpeg", "png")
+ 
+    print(filename)
     print(extension)
     if not extension:
         return "Image must be jpg or png format!"
 
-    image = read_imagefile(await file.read())
+    image = Image.open(requests.get(filename, stream=True).raw)
+    
+         
     prediction = predict(image)
     clase=prediction[0]['class']
     clase=clase.replace("_", " ")
