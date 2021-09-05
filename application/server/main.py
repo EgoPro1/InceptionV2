@@ -21,15 +21,14 @@ async def index():
 
 
 @app.post("/predict/image")
-async def predict_api(filename):
-    extension = filename.split(".")[-1] in ("jpg", "jpeg", "png")
- 
-    print(filename)
+async def predict_api(file: UploadFile = File(...)):
+    extension = file.filename.split(".")[-1] in ("jpg", "jpeg", "png")
+    print(file.filename)
     print(extension)
     if not extension:
         return "Image must be jpg or png format!"
 
-    image = Image.open(requests.get(filename, stream=True).raw)
+    image = read_imagefile(await file.read())
     
          
     prediction = predict(image)
