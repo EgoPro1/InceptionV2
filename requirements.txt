@@ -6,3 +6,4 @@ gunicorn
 uvicorn
 numpy
 python-multipart
+googletrans==3.1.0a0
